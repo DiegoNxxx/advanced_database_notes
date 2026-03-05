@@ -1,5 +1,5 @@
 # Session – YYYY-MM-DD
-19/02/2026
+26/02/2026
 ## Topics covered
 - In this session we practiced SQL aggregate functions.  
 Commands like  
@@ -32,4 +32,4 @@ Aggregate functions in SQL.
 
 ## Resources used
 - See `resources/`
-https://sqlbolt.com/lesson/select_queries_with_aggregates
+https://sqlbolt.com/lesson/select_queries_with_aggregates_pt_2Links 
