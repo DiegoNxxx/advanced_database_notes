@@ -1,0 +1,35 @@
+# Session – YYYY-MM-DD
+19/02/2026
+## Topics covered
+- In this session we practiced SQL aggregate functions.  
+Commands like  
+MAX()  
+AVG()  
+SUM()  
+COUNT(*)  
+GROUP BY  
+HAVING  
+
+Examples like  
+SELECT max(Years_employed) FROM employees  
+SELECT role, avg(years_employed) FROM employees group by role  
+SELECT building, sum(years_employed) FROM employees group by building  
+
+We also created a table called bricks and inserted some values using CREATE TABLE and INSERT INTO.
+
+## What I understood
+- I think I understood how aggregate functions and GROUP BY work.
+
+## What is still confusing
+- For now I had no doubts but I should keep practicing.
+
+## Questions
+- I don't have any question
+
+## Related concepts
+- [Concept name](../concepts/concept-name.md)  
+Aggregate functions in SQL.
+
+## Resources used
+- See `resources/`
+https://sqlbolt.com/lesson/select_queries_with_aggregates
