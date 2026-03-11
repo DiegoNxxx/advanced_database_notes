@@ -1,29 +1,66 @@
--- Lesson 10
-SELECT max(Years_employed) FROM employees;
-SELECT role, avg(years_employed) FROM employees group by role ;
-SELECT building, sum(years_employed) FROM employees group by building ;
+-- Try it 3
+select b.*,
+       count(*) over ( partition by shape) bricks_per_shape,
+       median ( weight ) over ( partition by brick_id) median_weight_per_shape
+from   bricks b
+order  by shape, weight, brick_id;
 
--- lesson 11
-SELECT role, count(*) as number_artist FROM employees where role = "Artist";
-SELECT role , count(*) FROM employees group by role;
-select role, sum(years_employed) from employees group by role having role = "Engineer"
+-- Try it 5
+select b.brick_id, b.weight,
+       round ( avg(weight) over (
+         order by brick_id
+       ), 2 ) running_average_weight
+from   bricks b
+order  by brick_id;
 
--- FreeSQL
+-- Try it 9
+select b.*,
+       min ( colour ) over (
+         order by brick_id
+         rows between 2 preceding and 1 preceding
+       ) first_colour_two_prev,
+       count (*) over (
+         order by weight
+         range between current row and 1 following
+       ) count_values_this_and_next
+from   bricks b
+order  by weight;
 
-drop table bricks cascade constraints;
-create table bricks (
-  colour varchar2(10),
-  shape  varchar2(10),
-  weight integer
-);
+-- Try it 11
+with totals as (
+  select b.*,
+         sum ( weight ) over (
+           partition by shape
+         ) weight_per_shape,
+         sum ( weight ) over (
+           order by brick_id
+         ) running_weight_by_id
+  from   bricks b
+)
+select * from totals
+where  running_weight_by_id > weight_per_shape
+and    shape = 'pyramid'
+order  by brick_id;
 
-insert into bricks values ( 'red', 'cube', 1 );
-insert into bricks values ( 'red', 'pyramid', 2 );
-insert into bricks values ( 'red', 'cuboid', 1 );
+-- 
+WITH ranked_salary AS (
+  SELECT 
+    name,
+    salary,
+    department_id,
+    DENSE_RANK() OVER (
+      PARTITION BY department_id 
+      ORDER BY salary DESC
+    ) ranking
+  FROM employee
+)
 
-insert into bricks values ( 'blue', 'cube', 1 );
-insert into bricks values ( 'blue', 'pyramid', 2 );
-
-insert into bricks values ( 'green', 'cube', 3 );
-
-commit;
+SELECT 
+  d.department_name,
+  s.name,
+  s.salary
+FROM ranked_salary s
+INNER JOIN department d
+  ON s.department_id = d.department_id
+WHERE s.ranking <= 3
+ORDER BY d.department_name ASC, s.salary DESC, s.name ASC;
